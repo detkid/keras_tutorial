@@ -103,3 +103,4 @@ ENV/
 # User settings
 .vscode
 .ipynb_checkpoints
+.debug.py
