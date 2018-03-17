@@ -102,5 +102,4 @@ ENV/
 
 # User settings
 .vscode
-boston_housing.py
 debug_for_test.py
