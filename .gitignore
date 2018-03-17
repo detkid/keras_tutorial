@@ -102,5 +102,5 @@ ENV/
 
 # User settings
 .vscode
-.ipynb_checkpoints
-.debug.py
+boston_housing.py
+debug_for_test.py
