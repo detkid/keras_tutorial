@@ -5,16 +5,18 @@ from keras.models import Sequential
 from keras.layers import Dense, Dropout, Flatten
 from keras.layers import Conv2D, MaxPooling2D
 from keras import backend as K
+
+import numpy as np
+import matplotlib.pyplot as plt
  
-batch_size = 128
+batch_size = 404
 num_classes = 6
-epochs = 10000 # 実行時間が長いのでここだけ 12 から 2 に変更しました
- 
-# input image dimensions
-img_rows, img_cols = 32, 32
- 
-# the data, shuffled and split between train and test sets
+epochs = 10000
+
 (x_train, y_train), (x_test, y_test) = boston_housing.load_data()
+plt.hist(y_train)
+plt.hist(y_test)
+plt.show()
 
 print('x_train shape:', x_train.shape)
 print(x_train.shape[0], 'train samples')
@@ -22,6 +24,13 @@ print(x_test.shape[0], 'test samples')
 
 y_train /= 10
 y_test /= 10
+
+y_train = y_train.round()
+y_test = y_test.round()
+
+plt.hist(y_train)
+plt.hist(y_test)
+plt.show()
 
 # convert class vectors to binary class matrices
 y_train = keras.utils.to_categorical(y_train, num_classes)
@@ -40,7 +49,7 @@ model.compile(loss='categorical_crossentropy',
               optimizer='adam',
               metrics=['accuracy'])
 
-tb_cb = keras.callbacks.TensorBoard(log_dir="tflog/", histogram_freq=1)
+tb_cb = keras.callbacks.TensorBoard(log_dir="tflog4/", histogram_freq=1)
 cbks = [tb_cb]
 
 history = model.fit(x_train, y_train,
@@ -51,3 +60,5 @@ history = model.fit(x_train, y_train,
                     callbacks=cbks)
 score = model.evaluate(x_test, y_test,
                        batch_size=batch_size, verbose=1)
+print('Test loss:', score[0])
+print('Test accuracy:', score[1])
