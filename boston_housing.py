@@ -9,14 +9,11 @@ from keras import backend as K
 import numpy as np
 import matplotlib.pyplot as plt
  
-batch_size = 404
+batch_size = 115
 num_classes = 6
-epochs = 10000
+epochs = 3000
 
 (x_train, y_train), (x_test, y_test) = boston_housing.load_data()
-plt.hist(y_train)
-plt.hist(y_test)
-plt.show()
 
 print('x_train shape:', x_train.shape)
 print(x_train.shape[0], 'train samples')
@@ -27,6 +24,100 @@ y_test /= 10
 
 y_train = y_train.round()
 y_test = y_test.round()
+
+plt.hist(y_train)
+plt.hist(y_test)
+plt.show()
+
+# ラベル0のデータ水増し
+additional_rabel = 0
+rabel_index = np.where(y_train == additional_rabel)[0]
+
+newdata = np.zeros((rabel_index.shape[0], x_train.shape[1]))
+newdata_rabel = np.zeros(rabel_index.shape[0])
+
+for data_index in range(rabel_index.shape[0]):
+    for add_kaisu in range(13):
+        rand_int = np.random.randint(0, 12, 1)
+        newdata[data_index] = x_train[rabel_index[data_index]]
+        newdata[data_index, rand_int] += 0.01 * x_train[rabel_index[data_index], rand_int]
+        newdata[data_index, rand_int] -= 0.01 * x_train[rabel_index[data_index], rand_int]
+    newdata_rabel[data_index] = additional_rabel
+
+x_train = np.r_[x_train, newdata]
+y_train = np.r_[y_train,newdata_rabel]
+
+# ラベル1のデータ水増し
+additional_rabel = 1
+rabel_index = np.where(y_train == additional_rabel)[0]
+
+newdata = np.zeros((rabel_index.shape[0], x_train.shape[1]))
+newdata_rabel = np.zeros(rabel_index.shape[0])
+
+for data_index in range(rabel_index.shape[0]):
+    for add_kaisu in range(13):
+        rand_int = np.random.randint(0, 12, 1)
+        newdata[data_index] = x_train[rabel_index[data_index]]
+        newdata[data_index, rand_int] += 0.01 * x_train[rabel_index[data_index], rand_int]
+        newdata[data_index, rand_int] -= 0.01 * x_train[rabel_index[data_index], rand_int]
+    newdata_rabel[data_index] = additional_rabel
+
+x_train = np.r_[x_train, newdata]
+y_train = np.r_[y_train,newdata_rabel]
+
+# ラベル3のデータ水増し
+additional_rabel = 3
+rabel_index = np.where(y_train == additional_rabel)[0]
+
+newdata = np.zeros((rabel_index.shape[0], x_train.shape[1]))
+newdata_rabel = np.zeros(rabel_index.shape[0])
+
+for data_index in range(rabel_index.shape[0]):
+    for add_kaisu in range(13):
+        rand_int = np.random.randint(0, 12, 1)
+        newdata[data_index] = x_train[rabel_index[data_index]]
+        newdata[data_index, rand_int] += 0.01 * x_train[rabel_index[data_index], rand_int]
+        newdata[data_index, rand_int] -= 0.01 * x_train[rabel_index[data_index], rand_int]
+    newdata_rabel[data_index] = additional_rabel
+
+x_train = np.r_[x_train, newdata]
+y_train = np.r_[y_train,newdata_rabel]
+
+# ラベル4のデータ水増し
+additional_rabel = 4
+rabel_index = np.where(y_train == additional_rabel)[0]
+
+newdata = np.zeros((rabel_index.shape[0], x_train.shape[1]))
+newdata_rabel = np.zeros(rabel_index.shape[0])
+
+for data_index in range(rabel_index.shape[0]):
+    for add_kaisu in range(13):
+        rand_int = np.random.randint(0, 12, 1)
+        newdata[data_index] = x_train[rabel_index[data_index]]
+        newdata[data_index, rand_int] += 0.01 * x_train[rabel_index[data_index], rand_int]
+        newdata[data_index, rand_int] -= 0.01 * x_train[rabel_index[data_index], rand_int]
+    newdata_rabel[data_index] = additional_rabel
+
+x_train = np.r_[x_train, newdata]
+y_train = np.r_[y_train,newdata_rabel]
+
+# ラベル5のデータ水増し
+additional_rabel = 5
+rabel_index = np.where(y_train == additional_rabel)[0]
+
+newdata = np.zeros((rabel_index.shape[0], x_train.shape[1]))
+newdata_rabel = np.zeros(rabel_index.shape[0])
+
+for data_index in range(rabel_index.shape[0]):
+    for add_kaisu in range(13):
+        rand_int = np.random.randint(0, 12, 1)
+        newdata[data_index] = x_train[rabel_index[data_index]]
+        newdata[data_index, rand_int] += 0.01 * x_train[rabel_index[data_index], rand_int]
+        newdata[data_index, rand_int] -= 0.01 * x_train[rabel_index[data_index], rand_int]
+    newdata_rabel[data_index] = additional_rabel
+
+x_train = np.r_[x_train, newdata]
+y_train = np.r_[y_train,newdata_rabel]
 
 plt.hist(y_train)
 plt.hist(y_test)
@@ -55,7 +146,7 @@ cbks = [tb_cb]
 history = model.fit(x_train, y_train,
                     batch_size=batch_size,
                     epochs=epochs,
-                    verbose=0,
+                    verbose=1,
                     validation_data=(x_test, y_test),
                     callbacks=cbks)
 score = model.evaluate(x_test, y_test,

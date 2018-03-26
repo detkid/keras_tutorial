@@ -103,3 +103,4 @@ ENV/
 # User settings
 .vscode
 debug_for_test.py
+events.*
