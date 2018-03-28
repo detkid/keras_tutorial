@@ -9,11 +9,11 @@ from keras import backend as K
 import numpy as np
 import matplotlib.pyplot as plt
 
-batch_size = 233
+batch_size = 133
 num_classes = 6
 epochs = 2000
 
-(x_train, y_train), (x_test, y_test) = boston_housing.load_data()
+(x_train, y_train), (x_test, y_test) = boston_housing.load_data(test_split=0.1)
 
 print('x_train shape:', x_train.shape)
 print(x_train.shape[0], 'train samples')
@@ -138,16 +138,19 @@ plt.hist(y_train)
 plt.hist(y_test)
 plt.show()
 
-print(y_train.shape)
+# # データ並び替え
+# test_ids = np.random.permutation(len(x_train))
+# x_train = x_train[test_ids]
+# y_train = y_train[test_ids]
 
 # convert class vectors to binary class matrices
 y_train = keras.utils.to_categorical(y_train, num_classes)
 y_test = keras.utils.to_categorical(y_test, num_classes)
 
 model = Sequential()
-model.add(Dense(128, activation='relu', input_shape=(13,)))
+model.add(Dense(256, activation='relu', input_shape=(13,)))
 model.add(Dropout(0.5))
-model.add(Dense(32, activation='relu'))
+model.add(Dense(64, activation='relu'))
 model.add(Dropout(0.2))
 model.add(Dense(num_classes, activation='softmax'))
 
@@ -157,7 +160,7 @@ model.compile(loss='categorical_crossentropy',
               optimizer='adam',
               metrics=['accuracy'])
 
-tb_cb = keras.callbacks.TensorBoard(log_dir="tflog326/", histogram_freq=1)
+tb_cb = keras.callbacks.TensorBoard(log_dir="tflog_0328/", histogram_freq=1)
 cbks = [tb_cb]
 
 history = model.fit(x_train, y_train,
